@@ -2,7 +2,19 @@
 export default {
     content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                'cyan-strong': 'hsl(var(--cyan-strong) / <alpha-value>)',
+                'cyan-very-dark': 'hsl(var(--cyan-very-dark) / <alpha-value>)',
+                'cyan-dark-grayish':
+                    'hsl(var(--cyan-dark-grayish) / <alpha-value>)',
+                'cyan-grayish': 'hsl(var(--cyan-grayish) / <alpha-value>)',
+                'cyan-light-grayish':
+                    'hsl(var(--cyan-light-grayish) / <alpha-value>)',
+                'cyan-very-light-grayish':
+                    'hsl(var(--cyan-very-light-grayish) / <alpha-value>)',
+            },
+        },
     },
     plugins: [],
 };
