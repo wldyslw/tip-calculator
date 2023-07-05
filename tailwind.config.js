@@ -5,6 +5,8 @@ export default {
         extend: {
             colors: {
                 'cyan-strong': 'hsl(var(--cyan-strong) / <alpha-value>)',
+                'cyan-strong-light':
+                    'hsl(var(--cyan-strong-light) / <alpha-value>)',
                 'cyan-very-dark': 'hsl(var(--cyan-very-dark) / <alpha-value>)',
                 'cyan-dark-grayish':
                     'hsl(var(--cyan-dark-grayish) / <alpha-value>)',
@@ -13,6 +15,7 @@ export default {
                     'hsl(var(--cyan-light-grayish) / <alpha-value>)',
                 'cyan-very-light-grayish':
                     'hsl(var(--cyan-very-light-grayish) / <alpha-value>)',
+                error: 'hsl(var(--error) / <alpha-value>)',
             },
         },
     },

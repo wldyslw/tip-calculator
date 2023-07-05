@@ -3,14 +3,47 @@
 @tailwind utilities;
 
 body {
+    @apply bg-cyan-light-grayish;
     font-family: 'Space Mono', 'Courier New', Courier, monospace;
 }
 
 :root {
     --cyan-strong: 172 67% 45%;
+    --cyan-strong-light: 172 67% 77%;
     --cyan-very-dark: 183 100% 15%;
     --cyan-dark-grayish: 186 14% 43%;
     --cyan-grayish: 184 14% 56%;
     --cyan-light-grayish: 185 41% 84%;
     --cyan-very-light-grayish: 189 41% 97%;
+    --error: 12 53% 60%;
+
+    /* Just for reference in code editor */
+    --color-cyan-strong: hsl(172 67% 45%);
+    --color-cyan-strong-light: hsl(172 67% 77%);
+    --color-cyan-very-dark: hsl(183 100% 15%);
+    --color-cyan-dark-grayish: hsl(186 14% 43%);
+    --color-cyan-grayish: hsl(184 14% 56%);
+    --color-cyan-light-grayish: hsl(185 41% 84%);
+    --color-cyan-very-light-grayish: hsl(189 41% 97%);
+    --color-error: hsl(12, 53%, 60%);
+}
+
+/* Chrome, Safari, Edge, Opera */
+.remove-arrows::-webkit-outer-spin-button,
+.remove-arrows::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.remove-arrows {
+    -moz-appearance: textfield;
+}
+
+input:checked + .bare-label {
+    @apply bg-cyan-strong text-cyan-very-dark;
+}
+
+input:focus-visible + .bare-label {
+    @apply outline outline-offset-2 outline-cyan-strong;
 }
