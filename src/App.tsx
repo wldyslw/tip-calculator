@@ -43,7 +43,7 @@ function App() {
                                     />
                                     <label
                                         htmlFor={radioId}
-                                        className="bare-label basis-1/3 cursor-pointer rounded-md bg-cyan-very-dark p-3 text-center text-2xl text-white active:bg-cyan-strong-light active:text-cyan-very-dark"
+                                        className="bare-label basis-1/3 cursor-pointer self-center rounded-md bg-cyan-very-dark p-2 text-center text-2xl text-white active:bg-cyan-strong-light active:text-cyan-very-dark"
                                     >
                                         {tipAmount}%
                                     </label>

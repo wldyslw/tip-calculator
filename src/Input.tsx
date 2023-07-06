@@ -38,19 +38,19 @@ const Input: React.FC<InputProps> = ({
             <label
                 id="mainLabel"
                 htmlFor={id}
-                className={`text-cyan-dark-grayish ${labelClasses ?? ''}`}
+                className={`mb-2 text-cyan-dark-grayish ${labelClasses ?? ''}`}
             >
                 {label}
             </label>
             <label
                 htmlFor={id}
                 id="errorLabel"
-                className={`text-error ${errorLabelClasses ?? ''}`}
+                className={`mb-2 text-error ${errorLabelClasses ?? ''}`}
             >
                 {errorMessage}
             </label>
-            <div className="relative mt-2 w-full">
-                <i className="absolute left-3 top-1/2 block h-4 w-4 -translate-y-1/2">
+            <div className="relative w-full">
+                <i className="absolute left-3 top-1/2 block -translate-y-1/2">
                     {icon}
                 </i>
                 <input
