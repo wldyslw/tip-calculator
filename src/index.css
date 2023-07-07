@@ -26,6 +26,14 @@ body {
     --color-cyan-light-grayish: hsl(185 41% 84%);
     --color-cyan-very-light-grayish: hsl(189 41% 97%);
     --color-error: hsl(12, 53%, 60%);
+
+    --amount-block-base-text-size: 1.875rem;
+}
+
+@media (min-width: 640px) {
+    :root {
+        --amount-block-base-text-size: 3rem;
+    }
 }
 
 /* Chrome, Safari, Edge, Opera */
