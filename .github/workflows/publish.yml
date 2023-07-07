@@ -48,7 +48,7 @@ jobs:
               run: pnpm install --frozen-lockfile
 
             - name: Build
-              run: pnpm build
+              run: pnpm build --base=/tip-calculator
 
             - name: Upload artifact
               uses: actions/upload-pages-artifact@v1
