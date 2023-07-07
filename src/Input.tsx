@@ -69,8 +69,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                                 ? 'caret-error outline outline-[3px] outline-error'
                                 : 'caret-cyan-strong focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-cyan-strong '
                         } ${inputClasses ?? ''}`}
-                        type="number"
-                        min={0}
+                        type="text"
+                        inputMode="decimal"
                         id={id}
                     />
                 </div>

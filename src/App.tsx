@@ -16,26 +16,33 @@ import useNumericValidation from './useNumericValidation';
 
 const defaultTips = [5, 10, 15, 25, 50];
 
-const customTipValidator = () => undefined;
-
 function App() {
     const [billInputProps, billValue, resetBill] = useNumericValidation('bill');
     const [customTipInputProps, customTipValue, resetCustomTip] =
-        useNumericValidation('customTip', { validator: customTipValidator });
+        useNumericValidation('customTip', { allowZero: true });
     const [peopleInputProps, peopleValue, resetPeople] = useNumericValidation(
         'peopleAmount',
         {
             allowFractional: false,
         }
     );
+
     const [selectedTip, setSelectedTip] = useState<number | null>(null);
+    const handleTipChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+        (e) => {
+            const tipAmount = +e.target.value;
+            setSelectedTip(tipAmount);
+            resetCustomTip();
+        },
+        [resetCustomTip]
+    );
 
     const handleCustomTip = useCallback<ChangeEventHandler<HTMLInputElement>>(
         (e) => {
             if (selectedTip !== null) {
                 setSelectedTip(null);
             }
-            customTipInputProps.onInput(e);
+            customTipInputProps.onChange(e);
         },
         [customTipInputProps, selectedTip]
     );
@@ -43,33 +50,53 @@ function App() {
     const tip = selectedTip ?? customTipValue;
 
     const canCalculate = useMemo(() => {
-        return [billValue, peopleValue, tip].some((v) => Number.isNaN(v));
-    }, [billValue, peopleValue, tip]);
+        const validationErrors = [
+            billInputProps,
+            peopleInputProps,
+            customTipInputProps,
+        ].some((prop) => prop.errorMessage !== undefined);
+        const emptyValues = [billValue, peopleValue, tip].some((val) =>
+            Number.isNaN(val)
+        );
+        return !validationErrors && !emptyValues;
+    }, [
+        billInputProps,
+        billValue,
+        customTipInputProps,
+        peopleInputProps,
+        peopleValue,
+        tip,
+    ]);
 
     const tipAmount = useMemo(() => {
-        return canCalculate ? 0 : (tip / 100) * billValue;
+        return canCalculate ? (tip / 100) * billValue : 0;
     }, [billValue, canCalculate, tip]);
 
     const totalAmount = useMemo(() => {
-        return canCalculate ? 0 : (billValue + tipAmount) / peopleValue;
+        return canCalculate ? (billValue + tipAmount) / peopleValue : 0;
     }, [billValue, canCalculate, peopleValue, tipAmount]);
 
     const reset = useCallback(() => {
         resetBill();
         resetPeople();
         resetCustomTip();
+        setSelectedTip(null);
     }, [resetBill, resetCustomTip, resetPeople]);
 
     const canReset = useMemo(() => {
-        return [
-            billInputProps.value,
-            peopleInputProps.value,
-            customTipInputProps.value,
-        ].some((v) => v !== '');
+        return (
+            selectedTip ||
+            [
+                billInputProps.value,
+                peopleInputProps.value,
+                customTipInputProps.value,
+            ].some((v) => v !== '')
+        );
     }, [
         billInputProps.value,
         customTipInputProps.value,
         peopleInputProps.value,
+        selectedTip,
     ]);
 
     return (
@@ -102,13 +129,10 @@ function App() {
                                         type="radio"
                                         name="tip"
                                         id={radioId}
-                                        className="absolute opacity-0"
+                                        className="absolute opacity-0" // leaves it accessible
                                         value={tipAmount}
                                         checked={tipAmount === selectedTip}
-                                        onChange={() => {
-                                            setSelectedTip(tipAmount);
-                                            resetCustomTip();
-                                        }}
+                                        onChange={handleTipChange}
                                     />
                                     <label
                                         htmlFor={radioId}
@@ -121,7 +145,7 @@ function App() {
                         })}
                         <Input
                             {...customTipInputProps}
-                            onInput={handleCustomTip}
+                            onChange={handleCustomTip}
                             errorMessage={undefined}
                             id="customTip"
                             placeholder="Custom"
