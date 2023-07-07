@@ -2,9 +2,7 @@ import {
     useCallback,
     useState,
     type ChangeEventHandler,
-    // type FocusEventHandler,
     type KeyboardEventHandler,
-    // type ClipboardEventHandler,
     useMemo,
     useDebugValue,
     useRef,
@@ -34,6 +32,10 @@ type UseNumericValidationType = (
 const useNumericValidation: UseNumericValidationType = (name, options = {}) => {
     const { allowFractional = true, allowZero = false } = options;
 
+    /**
+     * @param value source value
+     * @returns `string` error message, if any, otherwise `undefined`
+     */
     const validate = useCallback(
         (value: number) => {
             if (
@@ -64,7 +66,7 @@ const useNumericValidation: UseNumericValidationType = (name, options = {}) => {
         return rawValue === '' ? undefined : validate(numericValue);
     }, [numericValue, rawValue, validate]);
 
-    useDebugValue(errorMessage ?? 'Valid');
+    useDebugValue(`${name}: ${errorMessage ?? 'Valid'}`);
 
     const onChange = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
         const { value } = e.currentTarget;

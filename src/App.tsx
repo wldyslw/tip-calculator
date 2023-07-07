@@ -8,13 +8,13 @@ import {
 
 import Input from './Input';
 import Amount from './Amount';
+import useNumericValidation from './useNumericValidation';
 
 import { ReactComponent as Logo } from '../images/logo.svg';
 import { ReactComponent as Dollar } from '../images/icon-dollar.svg';
 import { ReactComponent as Person } from '../images/icon-person.svg';
-import useNumericValidation from './useNumericValidation';
 
-const defaultTips = [5, 10, 15, 25, 50];
+const predefinedTips = [5, 10, 15, 25, 50];
 
 function App() {
     const [billInputProps, billValue, resetBill] = useNumericValidation('bill');
@@ -27,11 +27,13 @@ function App() {
         }
     );
 
-    const [selectedTip, setSelectedTip] = useState<number | null>(null);
+    const [selectedPredefinedTip, setSelectedPredefinedTip] = useState<
+        number | null
+    >(null);
     const handleTipChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
         (e) => {
             const tipAmount = +e.target.value;
-            setSelectedTip(tipAmount);
+            setSelectedPredefinedTip(tipAmount);
             resetCustomTip();
         },
         [resetCustomTip]
@@ -39,17 +41,17 @@ function App() {
 
     const handleCustomTip = useCallback<ChangeEventHandler<HTMLInputElement>>(
         (e) => {
-            if (selectedTip !== null) {
-                setSelectedTip(null);
+            if (selectedPredefinedTip !== null) {
+                setSelectedPredefinedTip(null);
             }
             customTipInputProps.onChange(e);
         },
-        [customTipInputProps, selectedTip]
+        [customTipInputProps, selectedPredefinedTip]
     );
 
-    const tip = selectedTip ?? customTipValue;
+    const tip = selectedPredefinedTip ?? customTipValue;
 
-    const canCalculate = useMemo(() => {
+    const canCalculateTotals = useMemo(() => {
         const validationErrors = [
             billInputProps,
             peopleInputProps,
@@ -69,23 +71,23 @@ function App() {
     ]);
 
     const tipAmount = useMemo(() => {
-        return canCalculate ? (tip / 100) * billValue : 0;
-    }, [billValue, canCalculate, tip]);
+        return canCalculateTotals ? (tip / 100) * billValue : 0;
+    }, [billValue, canCalculateTotals, tip]);
 
     const totalAmount = useMemo(() => {
-        return canCalculate ? (billValue + tipAmount) / peopleValue : 0;
-    }, [billValue, canCalculate, peopleValue, tipAmount]);
+        return canCalculateTotals ? (billValue + tipAmount) / peopleValue : 0;
+    }, [billValue, canCalculateTotals, peopleValue, tipAmount]);
 
-    const reset = useCallback(() => {
+    const handleReset = useCallback(() => {
         resetBill();
         resetPeople();
         resetCustomTip();
-        setSelectedTip(null);
+        setSelectedPredefinedTip(null);
     }, [resetBill, resetCustomTip, resetPeople]);
 
     const canReset = useMemo(() => {
         return (
-            selectedTip ||
+            selectedPredefinedTip ||
             [
                 billInputProps.value,
                 peopleInputProps.value,
@@ -96,7 +98,7 @@ function App() {
         billInputProps.value,
         customTipInputProps.value,
         peopleInputProps.value,
-        selectedTip,
+        selectedPredefinedTip,
     ]);
 
     return (
@@ -121,7 +123,7 @@ function App() {
                         <legend className="mb-2 text-cyan-dark-grayish">
                             Select Tip %
                         </legend>
-                        {defaultTips.map((tipAmount) => {
+                        {predefinedTips.map((tipAmount) => {
                             const radioId = `tip-${tipAmount}`;
                             return (
                                 <Fragment key={tipAmount}>
@@ -131,7 +133,9 @@ function App() {
                                         id={radioId}
                                         className="absolute opacity-0" // leaves it accessible
                                         value={tipAmount}
-                                        checked={tipAmount === selectedTip}
+                                        checked={
+                                            tipAmount === selectedPredefinedTip
+                                        }
                                         onChange={handleTipChange}
                                     />
                                     <label
@@ -176,7 +180,7 @@ function App() {
                     />
                     <button
                         disabled={!canReset}
-                        onClick={reset}
+                        onClick={handleReset}
                         className="mt-auto w-full rounded-md bg-cyan-strong p-2 text-2xl uppercase text-cyan-very-dark focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-cyan-strong active:bg-cyan-strong-light disabled:cursor-not-allowed disabled:bg-cyan-strong disabled:opacity-30"
                     >
                         Reset
